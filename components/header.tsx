@@ -259,7 +259,7 @@ function NewHeader() {
           </div>
 
           {/* Right: Actions */}
-          <div className="flex items-center justify-end gap-3 min-w-[150px]">
+          <div className="flex items-center justify-end gap-2 md:gap-3 min-w-0 md:min-w-[150px]">
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
@@ -276,9 +276,10 @@ function NewHeader() {
                 <div className="flex items-center">
                   <button
                     onClick={() => setAuthModalOpen(true)}
-                    className="flex items-center justify-center font-bold bg-[#26215c] text-white rounded-md px-5 py-2 text-[12.5px] shadow-[0_2px_8px_rgba(0,0,0,0.12)] hover:bg-black hover:shadow-[0_4px_14px_rgba(0,0,0,0.18)] hover:scale-[1.02] transition-all duration-300 cursor-pointer"
+                    className="flex items-center justify-center whitespace-nowrap font-bold bg-[#26215c] text-white rounded-md px-3.5 md:px-5 py-2 text-[12px] md:text-[12.5px] shadow-[0_2px_8px_rgba(0,0,0,0.12)] hover:bg-black hover:shadow-[0_4px_14px_rgba(0,0,0,0.18)] hover:scale-[1.02] transition-all duration-300 cursor-pointer"
                   >
-                    Log In / Sign Up
+                    <span className="md:hidden">Log In</span>
+                    <span className="hidden md:inline">Log In / Sign Up</span>
                   </button>
                 </div>
               )

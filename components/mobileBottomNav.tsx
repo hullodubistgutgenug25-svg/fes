@@ -4,8 +4,10 @@ import type React from "react"
 import { useState, useEffect, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
+import { Home, Building2, PlusCircle, User } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
+import { useAuth } from "@/lib/auth-context"
 import { LanguageSwitcher } from "./languageSwitcher"
 import { AuthUserMenu } from "./authUserMenu"
 import { AuthModal } from "./authModal"
@@ -868,18 +870,122 @@ function useDockState() {
   return { activeIndex, isAnimating, tappedIndex, handleNavClick }
 }
 
+type MobileTab = {
+  id: string
+  href: string
+  icon: typeof Home
+  getLabel: (t: any, language: string, isLoggedIn: boolean) => string
+  isActive: (pathname: string) => boolean
+}
+
+const mobileTabs: MobileTab[] = [
+  {
+    id: "home",
+    href: "/",
+    icon: Home,
+    getLabel: (t) => t.header.home,
+    isActive: (p) => p === "/",
+  },
+  {
+    id: "venues",
+    href: "/browse",
+    icon: Building2,
+    getLabel: (t) => t.header.venues,
+    isActive: (p) => p.startsWith("/browse") || p.startsWith("/venues") || p.startsWith("/houses"),
+  },
+  {
+    id: "list",
+    href: "/list-your-space",
+    icon: PlusCircle,
+    getLabel: (_t, language) => (language === "ka" ? "დამატება" : "List"),
+    isActive: (p) => p.startsWith("/list-your-space"),
+  },
+  {
+    id: "account",
+    href: "/profile",
+    icon: User,
+    getLabel: (t, language, isLoggedIn) =>
+      isLoggedIn ? (language === "ka" ? "ჩემი" : "Account") : t.header.signIn,
+    isActive: (p) => p.startsWith("/profile"),
+  },
+]
+
 export function MobileBottomNav() {
-  const { activeIndex, isAnimating, tappedIndex, handleNavClick } = useDockState()
+  const pathname = usePathname() || "/"
+  const { t, language } = useLanguage()
+  const { user, loading } = useAuth()
+  const [authOpen, setAuthOpen] = useState(false)
+
+  const isLoggedIn = !loading && !!user
 
   return (
-    <nav className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-2">
-      <MobileGlassDock
-        activeIndex={activeIndex}
-        isAnimating={isAnimating}
-        tappedIndex={tappedIndex}
-        onNavClick={handleNavClick}
-      />
-    </nav>
+    <>
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-[#ece9fb] shadow-[0_-6px_24px_rgba(38,33,92,0.08)]"
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+        aria-label="Primary"
+      >
+        <ul className="flex items-stretch justify-around px-2 pt-1.5 pb-1.5">
+          {mobileTabs.map((tab) => {
+            const active = tab.isActive(pathname)
+            const label = tab.getLabel(t, language, isLoggedIn)
+            const Icon = tab.icon
+            const needsAuth = tab.id === "account" && !isLoggedIn
+
+            const inner = (
+              <span className="relative flex flex-col items-center justify-center gap-1 py-1.5 w-full">
+                {active && (
+                  <motion.span
+                    layoutId="mobileNavActivePill"
+                    className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-1 w-7 rounded-full bg-[#26215c]"
+                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                  />
+                )}
+                <span
+                  className={`flex items-center justify-center w-10 h-8 rounded-xl transition-colors duration-200 ${
+                    active ? "bg-[#f1effb] text-[#26215c]" : "text-[#9b95dc]"
+                  }`}
+                >
+                  <Icon className="w-[21px] h-[21px]" strokeWidth={active ? 2.4 : 2} />
+                </span>
+                <span
+                  className={`text-[10.5px] leading-none font-semibold tracking-tight transition-colors duration-200 ${
+                    active ? "text-[#26215c]" : "text-[#9b95dc]"
+                  }`}
+                >
+                  {label}
+                </span>
+              </span>
+            )
+
+            return (
+              <li key={tab.id} className="flex-1">
+                {needsAuth ? (
+                  <button
+                    type="button"
+                    onClick={() => setAuthOpen(true)}
+                    className="w-full cursor-pointer active:scale-95 transition-transform"
+                    aria-label={label}
+                  >
+                    {inner}
+                  </button>
+                ) : (
+                  <Link
+                    href={tab.href}
+                    className="block w-full active:scale-95 transition-transform"
+                    aria-label={label}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    {inner}
+                  </Link>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      </nav>
+      <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
+    </>
   )
 }
 

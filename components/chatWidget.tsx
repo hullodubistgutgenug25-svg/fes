@@ -35,7 +35,7 @@ export function ChatWidget() {
       {/* Help button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-40 w-14 h-14 bg-accent text-white rounded-full shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center bubblegum-animate md:w-16 md:h-16 cursor-pointer hover:cursor-pointer hover:bg-accent/90"
+        className="fixed bottom-24 right-5 md:bottom-6 md:right-6 z-40 w-14 h-14 bg-accent text-white rounded-full shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center bubblegum-animate md:w-16 md:h-16 cursor-pointer hover:cursor-pointer hover:bg-accent/90"
         aria-label="Open help panel"
       >
         {isOpen ? <X className="w-6 h-6 md:w-7 md:h-7" /> : <HelpCircle className="w-6 h-6 md:w-7 md:h-7" />}
@@ -43,7 +43,7 @@ export function ChatWidget() {
 
       {/* Questions panel */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-40 w-80 md:w-96 bg-card rounded-2xl shadow-2xl border border-border/30 max-h-96 md:max-h-[500px] overflow-y-auto custom-scrollbar animate-fade-up">
+        <div className="fixed bottom-44 right-5 md:bottom-24 md:right-6 z-40 w-[calc(100vw-2.5rem)] sm:w-80 md:w-96 bg-card rounded-2xl shadow-2xl border border-border/30 max-h-96 md:max-h-[500px] overflow-y-auto custom-scrollbar animate-fade-up">
           {/* Header */}
           <div className="sticky top-0 bg-gradient-to-r from-accent to-blue-600 text-white p-4 md:p-5 rounded-t-2xl">
             <h3 className="font-bold text-lg">Common Questions</h3>

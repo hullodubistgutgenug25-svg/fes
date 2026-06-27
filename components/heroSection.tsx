@@ -97,7 +97,7 @@ export function HeroSection() {
           transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="absolute bottom-[60px] left-1/2 w-[calc(100%-3rem)] md:w-full max-w-[680px] z-30"
         >
-          <div className="flex items-stretch bg-[#f7f6fd] rounded-t-[24px] rounded-b-none p-2 shadow-[0_-8px_24px_rgba(107,122,144,0.08)] relative">
+          <div className="flex flex-col md:flex-row md:items-stretch bg-[#f7f6fd] rounded-t-[24px] rounded-b-none p-2 shadow-[0_-8px_24px_rgba(107,122,144,0.08)] relative">
             {/* Left Curve Connection */}
             <svg className="absolute -left-[24px] bottom-0 w-[24px] h-[24px] pointer-events-none hidden md:block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M24 0V24H0C13.2548 24 24 13.2548 24 0Z" fill="#f7f6fd" />
@@ -119,7 +119,7 @@ export function HeroSection() {
             </div>
 
             {/* Divider */}
-            <div className="w-px self-stretch my-2.5 bg-[#cecbf6]" />
+            <div className="h-px w-full my-1 md:w-px md:h-auto md:self-stretch md:my-2.5 bg-[#cecbf6]" />
 
             {/* Category Field */}
             <div
@@ -162,7 +162,7 @@ export function HeroSection() {
             </div>
 
             {/* Divider */}
-            <div className="w-px self-stretch my-2.5 bg-[#cecbf6]" />
+            <div className="h-px w-full my-1 md:w-px md:h-auto md:self-stretch md:my-2.5 bg-[#cecbf6]" />
 
             {/* Location Field */}
             <div
